@@ -6,11 +6,11 @@ from tensorflow.keras.utils import img_to_array
 import processing_data
 import os
 
-alphabet=['a','b','c','d']
-model = keras.models.load_model("my_handgesture3.h5")
+alphabet=['a','b','c','d', 'unknown']
+model = keras.models.load_model("my_handgesture.h5")
 
 def classify(image):
-    image = cv2.resize(image, (128, 128))
+    image = cv2.resize(image, (224, 224))
     #image = image.astype("float") / 255.0
     image = img_to_array(image)
     image = np.expand_dims(image, axis=0)
@@ -27,7 +27,7 @@ while 1:
     top, right, bottom, left = 75, 350, 300, 590
     roi = img[top:bottom, right:left]
     roi=cv2.flip(roi,1)
-    gray = processing_data.func(roi)
+    gray = processing_data.extract_skin(roi)
     cv2.imshow('roi',gray)
     cv2.imshow('img', img)
     key = cv2.waitKey(1) & 0xFF
